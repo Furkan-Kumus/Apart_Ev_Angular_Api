@@ -1,6 +1,0 @@
-@ApartEvAngularApi_HostAddress = http://localhost:5081
-
-GET {{ApartEvAngularApi_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
