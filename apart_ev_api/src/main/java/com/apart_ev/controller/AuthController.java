@@ -29,7 +29,7 @@ public class AuthController {
         UserDto createdCustomerDto = authService.createCustomer(signupRequest);
         if (createdCustomerDto == null)
             return new ResponseEntity<>(
-                    "Customer not created, Come again later", HttpStatus.BAD_REQUEST);
+                    "Müşteri kaydı oluşturulamadı, daha sonra tekrar deneyiniz.", HttpStatus.BAD_REQUEST);
         return new ResponseEntity<>(createdCustomerDto, HttpStatus.CREATED);
     }
 }
