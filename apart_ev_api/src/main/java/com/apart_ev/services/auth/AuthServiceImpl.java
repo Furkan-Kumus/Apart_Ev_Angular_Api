@@ -8,6 +8,8 @@ import com.apart_ev.dto.UserDto;
 import com.apart_ev.entity.User;
 import com.apart_ev.enums.UserRole;
 import com.apart_ev.repository.UserRepository;
+
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -15,6 +17,20 @@ import lombok.RequiredArgsConstructor;
 public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
+
+    @PostConstruct
+    public void createAdminAccount() {
+        User adminAccount = userRepository.findByUserRole(UserRole.ADMIN);
+        if (adminAccount == null) {
+            User newAdminAccount = new User();
+            newAdminAccount.setName("Admin");
+            newAdminAccount.setEmail("admin@test.com");
+            newAdminAccount.setPassword(new BCryptPasswordEncoder().encode("admin"));
+            newAdminAccount.setUserRole(UserRole.ADMIN);
+            userRepository.save(newAdminAccount);
+            System.out.println("Admin hesabı başarıyla oluşturuldu!");
+        }
+    }
 
     @Override
     public UserDto createCustomer(SignupRequest signupRequest) {
