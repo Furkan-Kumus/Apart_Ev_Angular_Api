@@ -29,6 +29,8 @@ public class AuthServiceImpl implements AuthService {
             newAdminAccount.setUserRole(UserRole.ADMIN);
             userRepository.save(newAdminAccount);
             System.out.println("Admin hesabı başarıyla oluşturuldu!");
+        } else {
+            System.out.println("Admin hesabı zaten mevcut.");
         }
     }
 
