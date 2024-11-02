@@ -2,6 +2,8 @@ package com.apart_ev.entity;
 
 import java.util.Date;
 
+import com.apart_ev.dto.ApartDto;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -36,5 +38,21 @@ public class Apart {
 
     @Column(columnDefinition = "longblob")
     private byte[] image;
+
+    public ApartDto geApartDto() {
+        ApartDto apartDto = new ApartDto();
+        apartDto.setId(id);
+        apartDto.setName(name);
+        apartDto.setBrand(brand);
+        apartDto.setColor(color);
+        apartDto.setPrice(price);
+        apartDto.setDescription(description);
+        apartDto.setType(type);
+        apartDto.setTransmission(transmission);
+        apartDto.setYear(year);
+        apartDto.setReturnedImage(image);
+
+        return apartDto;
+    }
 
 }

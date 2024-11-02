@@ -7,6 +7,9 @@ import com.apart_ev.entity.Apart;
 import com.apart_ev.repository.ApartRepository;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -32,6 +35,11 @@ public class AdminServiceImpl implements AdminService {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    @Override
+    public List<ApartDto> getAllAparts() {
+        return apartRepository.findAll().stream().map(Apart::geApartDto).collect(Collectors.toList());
     }
 
 }
