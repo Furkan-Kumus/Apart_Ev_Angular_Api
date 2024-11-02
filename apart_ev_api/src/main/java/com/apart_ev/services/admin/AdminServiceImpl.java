@@ -6,9 +6,10 @@ import com.apart_ev.dto.ApartDto;
 import com.apart_ev.entity.Apart;
 import com.apart_ev.repository.ApartRepository;
 
-import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
+import java.io.IOException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -45,6 +46,36 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public void deleteApart(Long id) {
         apartRepository.deleteById(id);
+    }
+
+    @Override
+    public ApartDto getApartById(Long id) {
+        Optional<Apart> optionalApart = apartRepository.findById(id);
+        return optionalApart.map(Apart::geApartDto).orElse(null);
+    }
+
+    @Override
+    public boolean updateApart(Long apartId, ApartDto apartDto) throws IOException {
+        Optional<Apart> optionalApart = apartRepository.findById(apartId);
+        if (optionalApart.isPresent()) {
+            Apart existingApart = optionalApart.get();
+            if (apartDto.getImage() != null) {
+                existingApart.setImage(apartDto.getImage().getBytes());
+            }
+            existingApart.setPrice(apartDto.getPrice());
+            existingApart.setYear(apartDto.getYear());
+            existingApart.setType(apartDto.getType());
+            existingApart.setDescription(apartDto.getDescription());
+            existingApart.setTransmission(apartDto.getTransmission());
+            existingApart.setColor(apartDto.getColor());
+            existingApart.setName(apartDto.getName());
+            existingApart.setBrand(apartDto.getBrand());
+            apartRepository.save(existingApart);
+            return true;
+        } else {
+            return false;
+        }
+
     }
 
 }

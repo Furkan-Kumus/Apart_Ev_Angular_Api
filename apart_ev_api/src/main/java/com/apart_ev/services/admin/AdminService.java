@@ -6,9 +6,14 @@ import java.util.List;
 import com.apart_ev.dto.ApartDto;
 
 public interface AdminService {
+
     boolean postApart(ApartDto apartDto) throws IOException;
 
     List<ApartDto> getAllAparts();
 
     void deleteApart(Long id);
+
+    ApartDto getApartById(Long id);
+
+    boolean updateApart(Long apartId, ApartDto apartDto) throws IOException;
 }

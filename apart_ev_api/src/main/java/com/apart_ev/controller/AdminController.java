@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,6 +44,25 @@ public class AdminController {
     public ResponseEntity<Void> deleteApart(@PathVariable Long id) {
         adminService.deleteApart(id);
         return ResponseEntity.ok(null);
+    }
+
+    @GetMapping("/apart/{id}")
+    public ResponseEntity<ApartDto> getApartById(@PathVariable Long id) {
+        ApartDto apartDto = adminService.getApartById(id);
+        return ResponseEntity.ok(apartDto);
+    }
+
+    @PutMapping(value = "/apart/{apartId}")
+    public ResponseEntity<Void> updateApart(@PathVariable Long apartId, @ModelAttribute ApartDto apartDto)
+            throws IOException {
+        try {
+            boolean success = adminService.updateApart(apartId, apartDto);
+            if (success)
+                return ResponseEntity.status(HttpStatus.OK).build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 
 }
