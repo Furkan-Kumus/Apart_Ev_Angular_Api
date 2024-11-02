@@ -9,4 +9,6 @@ public interface AdminService {
     boolean postApart(ApartDto apartDto) throws IOException;
 
     List<ApartDto> getAllAparts();
+
+    void deleteApart(Long id);
 }

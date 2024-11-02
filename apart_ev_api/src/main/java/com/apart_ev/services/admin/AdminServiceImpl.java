@@ -42,4 +42,9 @@ public class AdminServiceImpl implements AdminService {
         return apartRepository.findAll().stream().map(Apart::geApartDto).collect(Collectors.toList());
     }
 
+    @Override
+    public void deleteApart(Long id) {
+        apartRepository.deleteById(id);
+    }
+
 }
