@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.util.List;
 
 import com.apart_ev.dto.ApartDto;
+import com.apart_ev.dto.ApartDtoListDto;
+import com.apart_ev.dto.BookAApartDto;
+import com.apart_ev.dto.SearchApartDto;
 
 public interface AdminService {
 
@@ -16,4 +19,10 @@ public interface AdminService {
     ApartDto getApartById(Long id);
 
     boolean updateApart(Long apartId, ApartDto apartDto) throws IOException;
+
+    List<BookAApartDto> getBookings();
+
+    boolean changeBookingStatus(Long bookingId, String status);
+
+    ApartDtoListDto searchApart(SearchApartDto searchApartDto);
 }

@@ -1,12 +1,21 @@
 package com.apart_ev.services.admin;
 
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
 import com.apart_ev.dto.ApartDto;
+import com.apart_ev.dto.ApartDtoListDto;
+import com.apart_ev.dto.BookAApartDto;
+import com.apart_ev.dto.SearchApartDto;
 import com.apart_ev.entity.Apart;
+import com.apart_ev.entity.BookAApart;
+import com.apart_ev.enums.BookApartStatus;
 import com.apart_ev.repository.ApartRepository;
+import com.apart_ev.repository.BookAApartRepository;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.io.IOException;
@@ -17,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AdminServiceImpl implements AdminService {
     private final ApartRepository apartRepository;
+    private final BookAApartRepository bookAApartRepository;
 
     @Override
     public boolean postApart(ApartDto apartDto) throws IOException {
@@ -75,6 +85,51 @@ public class AdminServiceImpl implements AdminService {
         } else {
             return false;
         }
+
+    }
+
+    @Override
+    public List<BookAApartDto> getBookings() {
+        return bookAApartRepository.findAll().stream().map(BookAApart::getBookAApartDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean changeBookingStatus(Long bookingId, String status) {
+        Optional<BookAApart> optionalBookAApart = bookAApartRepository.findById(bookingId);
+        if (optionalBookAApart.isPresent()) {
+            BookAApart existingBookAApart = optionalBookAApart.get();
+            if (Objects.equals(status, "Approve"))
+                existingBookAApart.setBookApartStatus((BookApartStatus.APPROVED));
+            else
+                existingBookAApart.setBookApartStatus(BookApartStatus.REJECTED);
+            bookAApartRepository.save(existingBookAApart);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public ApartDtoListDto searchApart(SearchApartDto searchApartDto) {
+        Apart apart = new Apart();
+        apart.setBrand(searchApartDto.getBrand());
+        apart.setType(searchApartDto.getType());
+        apart.setTransmission(searchApartDto.getTransmission());
+        apart.setColor(searchApartDto.getColor());
+
+        ExampleMatcher exampleMatcher = ExampleMatcher.matchingAll()
+                .withMatcher("brand", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
+                .withMatcher("type", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
+                .withMatcher("transmission", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
+                .withMatcher("color", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase());
+
+        Example<Apart> apartExample = Example.of(apart, exampleMatcher);
+        List<Apart> apartList = apartRepository.findAll(apartExample);
+
+        ApartDtoListDto apartDtoListDto = new ApartDtoListDto();
+        apartDtoListDto.setApartDtoList(apartList.stream().map(Apart::geApartDto).collect(Collectors.toList()));
+
+        return apartDtoListDto;
 
     }
 

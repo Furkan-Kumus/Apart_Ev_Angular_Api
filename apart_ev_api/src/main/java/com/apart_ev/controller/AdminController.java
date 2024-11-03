@@ -1,6 +1,7 @@
 package com.apart_ev.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,9 +15,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.apart_ev.dto.ApartDto;
+import com.apart_ev.dto.BookAApartDto;
+import com.apart_ev.dto.SearchApartDto;
 import com.apart_ev.services.admin.AdminService;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -63,6 +67,24 @@ public class AdminController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
+    }
+
+    @GetMapping("/apart/bookings")
+    public ResponseEntity<List<BookAApartDto>> getBookings() {
+        return ResponseEntity.ok(adminService.getBookings());
+    }
+
+    @GetMapping("/apart/booking/{bookingId}/{status}")
+    public ResponseEntity<?> changeBookingStatus(@PathVariable Long bookingId, @PathVariable String status) {
+        boolean success = adminService.changeBookingStatus(bookingId, status);
+        if (success)
+            return ResponseEntity.ok().build();
+        return ResponseEntity.notFound().build();
+    }
+
+    @PostMapping("/apart/search")
+    public ResponseEntity<?> searchApart(@RequestBody SearchApartDto searchApartDto) {
+        return ResponseEntity.ok(adminService.searchApart(searchApartDto));
     }
 
 }
