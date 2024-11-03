@@ -29,8 +29,8 @@ public class CustomerController {
         return ResponseEntity.ok(apartDtoList);
     }
 
-    @PostMapping("/apart/book")
-    public ResponseEntity<Void> bookAApart(@RequestBody BookAApartDto bookAApartDto) {
+    @PostMapping("/apart/book/{apartId}")
+    public ResponseEntity<Void> bookAApart(@PathVariable Long apartId, @RequestBody BookAApartDto bookAApartDto) {
         boolean success = customerService.BookAApart(bookAApartDto);
         if (success)
             return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -43,5 +43,10 @@ public class CustomerController {
         if (apartDto == null)
             return ResponseEntity.notFound().build();
         return ResponseEntity.ok(apartDto);
+    }
+
+    @GetMapping("/apart/bookings/{apartId}")
+    public ResponseEntity<List<BookAApartDto>> getBookingsByUserId(@PathVariable Long apartId) {
+        return ResponseEntity.ok(customerService.getBookingsByUserId(apartId));
     }
 }

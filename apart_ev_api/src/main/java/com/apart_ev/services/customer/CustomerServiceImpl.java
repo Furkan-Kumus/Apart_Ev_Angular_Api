@@ -57,4 +57,10 @@ public class CustomerServiceImpl implements CustomerService {
         Optional<Apart> optionalApart = apartRepository.findById(apartId);
         return optionalApart.map(Apart::geApartDto).orElse(null);
     }
+
+    @Override
+    public List<BookAApartDto> getBookingsByUserId(Long userId) {
+        return bookAApartRepository.findAllByUserId(userId).stream().map(BookAApart::getBookAApartDto)
+                .collect(Collectors.toList());
+    }
 }

@@ -5,6 +5,7 @@ import java.util.Date;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import com.apart_ev.dto.BookAApartDto;
 import com.apart_ev.enums.BookApartStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -41,5 +42,20 @@ public class BookAApart {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private Apart apart;
+
+    public BookAApartDto getBookAApartDto() {
+        BookAApartDto bookAApartDto = new BookAApartDto();
+        bookAApartDto.setId(id);
+        bookAApartDto.setDays(days);
+        bookAApartDto.setBookApartStatus(bookApartStatus);
+        bookAApartDto.setPrice(price);
+        bookAApartDto.setToDate(toDate);
+        bookAApartDto.setFromDate(fromDate);
+        bookAApartDto.setEmail(user.getEmail());
+        bookAApartDto.setUsername(user.getName());
+        bookAApartDto.setUserId(user.getId());
+        bookAApartDto.setApartId(apart.getId());
+        return bookAApartDto;
+    }
 
 }

@@ -16,4 +16,6 @@ public class BookAApartDto {
     private BookApartStatus bookApartStatus;
     private Long apartId;
     private Long userId;
+    private String username;
+    private String email;
 }

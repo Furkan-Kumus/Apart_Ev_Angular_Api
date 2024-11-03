@@ -11,4 +11,6 @@ public interface CustomerService {
     boolean BookAApart(BookAApartDto bookAApartDto);
 
     ApartDto getApartById(Long apartId);
+
+    List<BookAApartDto> getBookingsByUserId(Long userId);
 }
